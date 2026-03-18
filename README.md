@@ -9,7 +9,8 @@
 5. [Prediction on New Data](#prediction-on-new-data)  
 6. [Frontend with Streamlit](#frontend-with-streamlit)  
 7. [How to Run](#how-to-run)  
-8. [Future Improvements](#future-improvements)  
+8. [Future Improvements](#future-improvements)
+9. [Screenshots](#screenshots) 
 
 ## Project Overview
 This project implements a Machine Learning model for fraud detection in financial transactions. It uses a Neural Network (MLPClassifier) to classify whether a transaction is fraudulent or legitimate.
@@ -20,7 +21,7 @@ The project includes:
 • 	A Streamlit frontend that allows users to input transaction details and receive real-time fraud predictions.
 • 	Visualization of dataset statistics for better insights.
 
-##Dataset and Preprocessing
+## Dataset and Preprocessing
 Steps:
 • 	Remove irrelevant columns: Transaction and customer IDs are dropped since they don’t carry semantic meaning.
 • 	Add simulated fraud cases: High-value online transactions are artificially added to strengthen fraud detection.
@@ -28,20 +29,20 @@ Steps:
 • 	Feature scaling: Numerical features (, ) are standardized using .
 • 	Balance dataset: Fraud cases are often rare, so SMOTE (Synthetic Minority Oversampling Technique) is applied to balance the dataset.
 
-# Example: Preprocessing
+Example: Preprocessing
 df = df.drop(columns=['transaction_id', 'customer_id'], errors='ignore')
 df_encoded = pd.get_dummies(df, columns=['location'], drop_first=True)
 scaler = StandardScaler()
 X[['amount', 'time']] = scaler.fit_transform(X[['amount', 'time']])
 
-##Model Training
+## Model Training
 • 	Algorithm:  (Multi-Layer Perceptron Neural Network).
 • 	Architecture: Three hidden layers with sizes .
 • 	Activation function: ReLU.
 • 	Learning rate: 0.01.
 • 	Iterations: Up to 1000.
 The model is trained on the balanced dataset and saved as . The scaler is also saved as .
-# Example:
+Example:
 model = MLPClassifier(hidden_layer_sizes=(50, 30, 20),
                       max_iter=1000,
                       random_state=42,
@@ -49,13 +50,13 @@ model = MLPClassifier(hidden_layer_sizes=(50, 30, 20),
                       activation='relu')
 model.fit(X_train, y_train)
 
-##📈 Evaluation
+## Evaluation
 The model is evaluated using a classification report
 y_pred = model.predict(X_test)
 report = classification_report(y_test, y_pred)
 print(report)
 
-##Prediction on New Data
+## Prediction on New Data
 The model can predict fraud probability for new transactions.
 new_transactions = [
     {"amount": 3871.09, "time": 10, "location": "Physical Store"},
@@ -68,7 +69,7 @@ df_new_encoded[['amount', 'time']] = scaler.transform(df_new_encoded[['amount', 
 predictions = model.predict(df_new_encoded)
 probabilities = model.predict_proba(df_new_encoded)[:, 1]
 
-##Frontend with Streamlit
+## Frontend with Streamlit
 The frontend allows users to input transaction details and get fraud predictions in real time.
 
 import streamlit as st
@@ -86,7 +87,7 @@ with st.form("fraude_form"):
     submitted = st.form_submit_button("Detect Fraud")
 
     
-##▶️ How to Run
+## How to Run
 1. 	Clone the repository:
 git clone https://github.com/yourusername/smart_fraud_detector.git
 cd smart_fraud_detector
@@ -98,8 +99,11 @@ pip install -r requirements.txt
 streamlit run app.py
 
 
-🚀 Future Improvements
+## Future Improvements
 • 	Add more features (e.g., device type, transaction frequency).
 • 	Deploy the model with Docker or cloud services.
 • 	Improve frontend with interactive dashboards.
+
+## Screenshots
+### Fraud Detection Form
 
