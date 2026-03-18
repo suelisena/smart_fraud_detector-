@@ -29,11 +29,8 @@ Steps:
 • 	Feature scaling: Numerical features (, ) are standardized using .
 • 	Balance dataset: Fraud cases are often rare, so SMOTE (Synthetic Minority Oversampling Technique) is applied to balance the dataset.
 
-Example: Preprocessing
-df = df.drop(columns=['transaction_id', 'customer_id'], errors='ignore')
-df_encoded = pd.get_dummies(df, columns=['location'], drop_first=True)
-scaler = StandardScaler()
-X[['amount', 'time']] = scaler.fit_transform(X[['amount', 'time']])
+## Reprocessing
+![Reprocessing](images/preprocessing.png)
 
 ## Model Training
 • 	Algorithm:  (Multi-Layer Perceptron Neural Network).
@@ -42,49 +39,19 @@ X[['amount', 'time']] = scaler.fit_transform(X[['amount', 'time']])
 • 	Learning rate: 0.01.
 • 	Iterations: Up to 1000.
 The model is trained on the balanced dataset and saved as . The scaler is also saved as .
-Example:
-model = MLPClassifier(hidden_layer_sizes=(50, 30, 20),
-                      max_iter=1000,
-                      random_state=42,
-                      learning_rate_init=0.01,
-                      activation='relu')
-model.fit(X_train, y_train)
+## Model Training
+![Model Training](images/model_training.png)
 
 ## Evaluation
-The model is evaluated using a classification report
-y_pred = model.predict(X_test)
-report = classification_report(y_test, y_pred)
-print(report)
+![Evaluation](images/evaluation.png)
 
 ## Prediction on New Data
 The model can predict fraud probability for new transactions.
-new_transactions = [
-    {"amount": 3871.09, "time": 10, "location": "Physical Store"},
-    {"amount": 12.56, "time": 12, "location": "Online"},
-]
-
-df_new = pd.DataFrame(new_transactions)
-df_new_encoded = pd.get_dummies(df_new, columns=['location'], drop_first=True)
-df_new_encoded[['amount', 'time']] = scaler.transform(df_new_encoded[['amount', 'time']])
-predictions = model.predict(df_new_encoded)
-probabilities = model.predict_proba(df_new_encoded)[:, 1]
+![Prediction](images/prediction.png)
 
 ## Frontend with Streamlit
 The frontend allows users to input transaction details and get fraud predictions in real time.
 
-import streamlit as st
-import joblib
-
-model = joblib.load("fraude_model.pkl")
-scaler = joblib.load("scaler.pkl")
-
-st.markdown("<h1 style='font-size:40px; color:#2E86C1;'>💳 Fraud Detection System</h1>", unsafe_allow_html=True)
-
-with st.form("fraude_form"):
-    amount = st.number_input("Transaction amount (R$)", min_value=0.0)
-    time_input = st.number_input("Transaction time (0-23)", min_value=0, max_value=23)
-    location = st.selectbox("Transaction location", ["Physical Store", "Online"])
-    submitted = st.form_submit_button("Detect Fraud")
 
     
 ## How to Run
@@ -106,4 +73,16 @@ streamlit run app.py
 
 ## Screenshots
 ### Fraud Detection Form
+![Fraud Detection Form](images/fraud_detected.png)
 
+### Secure Transation Form
+![Secure Transation Form](images/tela_sistema.png)
+
+### Dataserver Statistics
+![Dataserver Statistics](images/dataset_stat.png)
+
+### Distribution of transaction values
+![Distribution of transaction values](images/distribution_transaction.png)
+
+### Distribution of transaction values
+![Distribution of transaction values](images/distribution_values.png)
